@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import axios from 'axios';
 import ProductList from '../components/Index/ProductList';
 import baseUrl from '../utils/baseUrl';

@@ -42,6 +42,19 @@ function CreateProduct() {
           accept='image/*'
         />
       </Form.Group>
+      <Form.Field
+        control={TextArea}
+        name='description'
+        label='Description'
+        placeholder='Description'
+      />
+      <Form.Field
+        control={Button}
+        color='blue'
+        icon='pencil alternate'
+        content='Submit'
+        type='submit'
+      />
     </Form>
     </>
   )

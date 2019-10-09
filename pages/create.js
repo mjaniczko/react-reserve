@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Form,
   Input,
@@ -24,6 +24,12 @@ function CreateProduct() {
   const [mediaPreview, setMediaPreview] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    const isProduct = Object.values(product).every(el => Boolean(el));
+    isProduct ? setDisabled(false) :setDisabled(true);
+  }, [product]);
 
   function handleChange(event) {
     const { name, value, files } = event.target;
@@ -53,7 +59,7 @@ function CreateProduct() {
     const mediaUrl = await handleImageUpload();
     const url = `${baseUrl}/api/product`;
     const payload = { ...product, mediaUrl }
-    const response = await axios.post(url, payload);
+    await axios.post(url, payload);
     setLoading(false);
     setProduct(INITIAL_PRODUCT);
     setSuccess(true);
@@ -113,7 +119,7 @@ function CreateProduct() {
       />
       <Form.Field
         control={Button}
-        disabled={loading}
+        disabled={disabled}
         color='blue'
         icon='pencil alternate'
         content='Submit'

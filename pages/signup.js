@@ -87,7 +87,7 @@ function Signup() {
           onChange={handleChange}
         />
         <Button
-          icon='singup'
+          icon='signup'
           type='submit'
           color='orange'
           content='Singup'

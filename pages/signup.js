@@ -1,7 +1,44 @@
+import React, { useState, useEffect } from 'react';
 import { Button, Form, Icon, Message, Segment } from 'semantic-ui-react';
 import Link from 'next/link';
+import catchErrors from '../utils/catchErrors';
+
+const INITIAL_USER = {
+  name: '',
+  email: '',
+  password: ''
+}
 
 function Signup() {
+  const [user, setUser] = useState(INITIAL_USER);
+  const [disabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('')
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setUser(prevState => ({ ...prevState, [name]: value }));
+  };
+
+  useEffect(() => {
+    const isUser = Object.values(user).every(el => Boolean(el));
+    isUser ? setDisabled(false) : setDisabled(true);
+  }, [user]);
+
+  async function handleSubmit() {
+    event.preventDefault();
+    try {
+      setLoading(true);
+      setError('');
+      console.log(user);
+      // make request to signup user
+    } catch(error) {
+      catchErrors(error, setError)
+    } finally {
+      setLoading(false);
+    };
+  };
+
   return <>
     <Message
       attached
@@ -10,7 +47,12 @@ function Signup() {
       content='Create a new account'
       color='teal'
     />
-    <Form>
+    <Form error={Boolean(error)} loading={loading} onSubmit={handleSubmit}>
+      <Message
+        error
+        header='Oops!'
+        contnet={error}
+      />
       <Segment>
         <Form.Input
           fluid
@@ -19,6 +61,8 @@ function Signup() {
           label='Name'
           placeholder='Name'
           name='name'
+          value={user.name}
+          onChange={handleChange}
         />
         <Form.Input
           fluid
@@ -27,6 +71,9 @@ function Signup() {
           label='Email'
           placeholder='Email'
           name='email'
+          value={user.email}
+          type='email'
+          onChange={handleChange}
         />
         <Form.Input
           fluid
@@ -35,12 +82,16 @@ function Signup() {
           label='Password'
           placeholder='Password'
           name='password'
+          type='password'
+          value={user.password}
+          onChange={handleChange}
         />
         <Button
           icon='singup'
           type='submit'
           color='orange'
           content='Singup'
+          disabled={disabled || loading}
         />
       </Segment>
     </Form>
@@ -52,6 +103,6 @@ function Signup() {
       </Link>{" "}instead.
     </Message>
   </>;
-}
+};
 
 export default Signup;

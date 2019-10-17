@@ -56,7 +56,7 @@ function Signup() {
       <Message
         error
         header='Oops!'
-        contnet={error}
+        content={error}
       />
       <Segment>
         <Form.Input

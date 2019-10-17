@@ -50,7 +50,7 @@ function Login() {
       <Message
         error
         header='Oops!'
-        contnet={error}
+        content={error}
       />
       <Segment>
         <Form.Input

@@ -26,7 +26,14 @@ class MyApp extends App {
         const url = `${baseUrl}/api/account`;
         const response = await axios.get(url, payload);
         const user = response.data;
-        pageProps.user = user
+        pageProps.user = user;
+        const isRoot = user.role === 'root'
+        const isAdmin = user.role === 'admin'
+        // if authenticated, but not of role 'admin' or 'root', redirect from '/creat' page
+        const isNotPermitted = !(isRoot || isAdmin) && ctx.pathname === '/create';
+        if (isNotPermitted) {
+          redirectUser(ctx, '/');
+        };
       } catch (error) {
         console.error('Error getting current user', error);
         // Throw out invalid token
